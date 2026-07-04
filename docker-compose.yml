@@ -1,0 +1,33 @@
+#docker compose run --build --rm claude
+#docker compose run --rm claude
+#
+services:
+  claude:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ../:/workspace
+      # Persists Claude login/config across runs (CLAUDE_CONFIG_DIR points all
+      # state here in the Dockerfile, so .claude.json + credentials survive --rm).
+      - ${HOME}/.claude:/home/vscode/.claude
+    working_dir: /workspace
+    stdin_open: true   # keeps -i
+    tty: true          # keeps -t
+    command: claude --remote-control --dangerously-skip-permissions
+    # Uncomment to add the egress firewall later:
+    # cap_add: [NET_ADMIN, NET_RAW]
+
+  grok:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile.grok     # ← separate Dockerfile
+    volumes:
+      - ../:/workspace
+      # Persists Grok login + config across runs
+      - ${HOME}/.grok:/home/vscode/.grok
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+    # === Autonomous mode (analog to Claude's dangerously-skip-permissions) ===
+    command: grok --always-approve

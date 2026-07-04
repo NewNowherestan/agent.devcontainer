@@ -1,0 +1,12 @@
+FROM mcr.microsoft.com/devcontainers/base:ubuntu
+
+USER vscode
+
+# Install Grok Build CLI (official xAI)
+RUN curl -fsSL https://x.ai/cli/install.sh | bash
+
+# Grok installs the binary here
+ENV PATH="/home/vscode/.grok/bin:${PATH}"
+
+# Recommended: persist everything under ~/.grok
+# (auth.json, config.toml, skills, history, etc.)
