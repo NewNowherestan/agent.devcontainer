@@ -3,7 +3,7 @@
 #
 # One-time, on the host, before either agent needs to reach project infra
 # (e.g. Ippodromo's Postgres in ../app/compose.yaml):
-#   docker network create ippodromo-net
+#   docker network create agent-ai_network
 # Both compose files below join this shared network as an *additional* network
 # (each keeps its own project-default network too), so a container in one
 # compose project can resolve and reach a container in the other by service
@@ -24,7 +24,7 @@ services:
     stdin_open: true   # keeps -i
     tty: true          # keeps -t
     command: claude --remote-control --dangerously-skip-permissions
-    networks: [default, ippodromo-net]
+    networks: [default, agent-ai_network]
     # Uncomment to add the egress firewall later:
     # cap_add: [NET_ADMIN, NET_RAW]
 
@@ -41,8 +41,8 @@ services:
     tty: true
     # === Autonomous mode (analog to Claude's dangerously-skip-permissions) ===
     command: grok --always-approve
-    networks: [default, ippodromo-net]
+    networks: [default, agent-ai_network]
 
 networks:
-  ippodromo-net:
+  agent-ai_network:
     external: true
