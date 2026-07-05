@@ -1,6 +1,15 @@
 #docker compose run --build --rm claude
 #docker compose run --rm claude
 #
+# One-time, on the host, before either agent needs to reach project infra
+# (e.g. Ippodromo's Postgres in ../app/compose.yaml):
+#   docker network create ippodromo-net
+# Both compose files below join this shared network as an *additional* network
+# (each keeps its own project-default network too), so a container in one
+# compose project can resolve and reach a container in the other by service
+# name — e.g. from inside `claude`: jdbc:postgresql://postgres:5432/ippodromo.
+# This grants network reachability only; it does not give either agent
+# container the docker CLI or the docker socket.
 services:
   claude:
     build:
@@ -15,6 +24,7 @@ services:
     stdin_open: true   # keeps -i
     tty: true          # keeps -t
     command: claude --remote-control --dangerously-skip-permissions
+    networks: [default, ippodromo-net]
     # Uncomment to add the egress firewall later:
     # cap_add: [NET_ADMIN, NET_RAW]
 
@@ -31,3 +41,8 @@ services:
     tty: true
     # === Autonomous mode (analog to Claude's dangerously-skip-permissions) ===
     command: grok --always-approve
+    networks: [default, ippodromo-net]
+
+networks:
+  ippodromo-net:
+    external: true
