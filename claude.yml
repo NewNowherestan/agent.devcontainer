@@ -1,0 +1,32 @@
+# claude.yml — agent/container-level configuration for the Claude agent.
+# Lives in this submodule (moved here 2026-07-08 from the parent project's repo
+# root) because git-write policy and commit identity are agent/container
+# concerns, not project-domain concerns — this is the natural single home for
+# both across any project that reuses agent.devcontainer.
+# Referenced by this directory's own CLAUDE.md, and by the parent project's
+# root CLAUDE.md, which points here for the git rule.
+# Sessions read this at start; keys grow here as new agent policies need switches —
+# one structured file, not one file per variable.
+
+git:
+  # false: zero git writes of any kind — no add, no commit, no config, nothing;
+  #        read-only git (status/log/diff/show/branch) is allowed. An operator request
+  #        for a write is answered by asking to flip this flag or to state the exact
+  #        one-time command. Missing file or missing key == false.
+  # true:  Claude commits proactively — after each finished task and after each
+  #        successful build or verified run, immediately, with a descriptive message
+  #        carrying the model/version/effort/tokens trailer. Committing is the ONLY
+  #        permitted write: never push, never rewrite existing history.
+  write_enabled: false
+
+  # Every git command Claude runs — read-only included — is appended here at execution
+  # time, one line each (format in that file's header). Append-only audit trail.
+  # Path is relative to the project repo root that is being worked in (each parent
+  # project that embeds this submodule gets its own log at its own root).
+  commands_log: git_commands_log
+
+  # Identity for agent commits — must match this directory's .devcontainer/Dockerfile,
+  # which bakes the same values for rebuilt containers.
+  identity:
+    name: Claude Code
+    email: vosstania-mashin-net@i-nebilo.net
