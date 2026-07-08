@@ -23,3 +23,10 @@ ENV PATH="${JAVA_HOME}/bin:${PATH}"
 # to the host. Without this, .claude.json lives at ~/.claude.json (unmounted) and
 # is lost on `--rm`, forcing a re-login every run.
 ENV CLAUDE_CONFIG_DIR=/home/vscode/.claude
+
+# Git identity for the agent's own commits (repo-root `git_write_enabled` policy,
+# CLAUDE.md Learned notes 2026-07-08): commits are attributed to the model, carry
+# the model/effort/tokens trailer, and are the ONLY permitted git write — never push.
+# Baked here so every rebuilt container has the identity without per-session setup.
+RUN git config --global user.name "Claude Code" \
+	&& git config --global user.email "vosstania-mashin-net@i-nebilo.net"
