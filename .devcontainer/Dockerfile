@@ -24,7 +24,7 @@ ENV PATH="${JAVA_HOME}/bin:${PATH}"
 # is lost on `--rm`, forcing a re-login every run.
 ENV CLAUDE_CONFIG_DIR=/home/vscode/.claude
 
-# Git identity for the agent's own commits (repo-root `git_write_enabled` policy,
+# Git identity for the agent's own commits (repo-root `claude.yml` git policy,
 # CLAUDE.md Learned notes 2026-07-08): commits are attributed to the model, carry
 # the model/effort/tokens trailer, and are the ONLY permitted git write — never push.
 # Baked here so every rebuilt container has the identity without per-session setup.
