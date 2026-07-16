@@ -25,6 +25,14 @@ services:
     tty: true          # keeps -t
     command: claude --remote-control --dangerously-skip-permissions
     networks: [default, agent-ai_network]
+    # MVP-INFRA-T1 (2026-07-16): the Ippodromo board/observer runs INSIDE this container
+    # (evolve serves 8080 while a season runs; the verb-less boot serves it any time).
+    # Publishing it lets the host browser watch runs live: http://localhost:8088
+    # (host port 8088, not 8080, dodging other projects' claims — the 5435 Postgres precedent).
+    # No memory limit is set here on purpose: the container sees the whole Docker VM; the
+    # season-scale OOM was the JVM's own 2GB ergonomic default, fixed in ippocliw (MVP-FIX-T2).
+    ports:
+      - "8088:8080"
     # Uncomment to add the egress firewall later:
     # cap_add: [NET_ADMIN, NET_RAW]
 
