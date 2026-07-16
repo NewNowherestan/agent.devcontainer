@@ -1,5 +1,8 @@
-#docker compose run --build --rm claude
-#docker compose run --rm claude
+# docker compose run --service-ports --build --rm claude
+# docker compose run --service-ports --rm claude
+# (--service-ports is required: `compose run` ignores the service's ports:
+#  section without it, so the 8088→8080 board publish would silently not
+#  happen — `make agent` passes it for you.)
 #
 # One-time, on the host, before either agent needs to reach project infra
 # (e.g. Ippodromo's Postgres in ../app/compose.yaml):

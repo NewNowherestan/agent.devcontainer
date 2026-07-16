@@ -14,7 +14,7 @@ ifeq ($(firstword $(MAKECMDGOALS)),agent)
 endif
 
 agent: ## Run an AI agent in Docker. Default: claude. Usage: make agent [grok]
-	docker compose run --build --rm $(AGENT)
+	docker compose run --service-ports --build --rm $(AGENT)
 
 docker-build: ## Pre-build all agent Docker images
 	docker compose build
