@@ -14,6 +14,7 @@ ENV PATH="/home/vscode/.local/bin:${PATH}"
 ARG TARGETARCH
 RUN sudo apt-get update \
 	&& sudo apt-get install -y --no-install-recommends openjdk-25-jdk-headless postgresql-client dnsutils netcat-openbsd kcat \
+		libharfbuzz0b fontconfig fonts-dejavu-core \
 	&& sudo rm -rf /var/lib/apt/lists/*
 ENV JAVA_HOME="/usr/lib/jvm/java-25-openjdk-${TARGETARCH}"
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
