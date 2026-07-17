@@ -13,8 +13,14 @@ ifeq ($(firstword $(MAKECMDGOALS)),agent)
   endif
 endif
 
-agent: ## Run an AI agent in Docker. Default: claude. Usage: make agent [grok]
-	docker compose run --service-ports --build --rm $(AGENT)
+# Extra flags for `docker compose run`, meant for port publishes. Empty by
+# default: `make agent` from THIS directory exposes no ports (chat-only, no
+# host-port conflicts across laptops). A parent project's root Makefile passes
+# e.g. PUBLISH="--publish 8088:8080" to expose project UIs from up there.
+PUBLISH ?=
+
+agent: ## Run an AI agent in Docker (no ports here; parent Makefile passes PUBLISH=). Default: claude. Usage: make agent [grok]
+	docker compose run $(PUBLISH) --build --rm $(AGENT)
 
 docker-build: ## Pre-build all agent Docker images
 	docker compose build
