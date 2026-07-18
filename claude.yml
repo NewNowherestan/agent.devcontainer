@@ -17,7 +17,7 @@ git:
   #        successful build or verified run, immediately, with a descriptive message
   #        carrying the model/version/effort/tokens trailer. Committing is the ONLY
   #        permitted write: never push, never rewrite existing history.
-  write_enabled: false
+  write_enabled: true  # flipped 2026-07-18 by UDO chat grant: "you are free to continue non stop the tasks, to commit up untill we are dont with the BH eras" - commit-only (never push/rebase/amend), reverts to false at BH close or UDO word
 
   # Every git command Claude runs — read-only included — is appended here at execution
   # time, one line each (format in that file's header). Append-only audit trail.
