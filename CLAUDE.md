@@ -46,6 +46,29 @@ the container died instantly and silently; the wait watched only the outcome sig
 "in progress" for 14 minutes; the retry watchdog then trusted `kill -0` on a zombie pid. Both
 failure modes are exactly what the three-part launch contract prevents.
 
+## THE TRAFFIC-LIGHT CLOSE — task-concluding responses (2026-07-19, UDO-directed; canonical here for every project embedding this submodule — supersedes the 2026-07-05 one-marker convention in project Learned notes)
+
+Every response that **concludes a task** (or a story/acceptance run) ends with a marker block,
+placed at the very end after any normal summary. Two layers, so the reader can tell in one
+glance what happened DURING the work and where things stand NOW:
+
+1. **Process events (zero or more lines):** every blocker or deviation *faced* during the
+   work, even if resolved in the same session — one line each, marker + one-line description +
+   its resolution:
+   `🔴 BLOCKER (resolved): <what stopped the work> — <how it was cleared>`
+   `🟡 DEVIATION: <what departed from spec/plan> — <where it is logged>`
+2. **The final state (exactly one line, always last):**
+   `🟢🟢🟢 **ALL GOOD** 🟢🟢🟢` — task closed, nothing open; or
+   `🔴🔴🔴 **BLOCKER** 🔴🔴🔴` — the task is blocked NOW (status:blocked, unresolved
+   Question, unreachable dependency); or
+   `🟡🟡🟡 **DEVIATION** 🟡🟡🟡` — the task closed but only via a still-standing deviation.
+   Each followed by a one-line summary.
+
+A resolved mid-process blocker therefore shows BOTH lines — its 🔴 event line and the final
+🟢 — never a bare green that hides the stumble, never a bare red that reads as
+currently-stuck when it isn't. Responses that conclude nothing (mid-task status updates, pure
+Q&A) still carry no markers at all.
+
 ## Container facts
 
 - This container has **network-only** Docker access to sibling compose stacks (e.g. a parent project's Postgres) over the shared external network declared in `compose.yml` here (`agent-ai_network`, created once via `docker network create agent-ai_network`) — there is no `docker`/`podman` CLI and no `/var/run/docker.sock` inside this container. It can resolve and reach service names (e.g. `postgres:5432`) but cannot start, stop, or inspect containers.
