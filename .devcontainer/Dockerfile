@@ -10,10 +10,14 @@ ENV PATH="/home/vscode/.local/bin:${PATH}"
 # project's Postgres directly over agent-ai_network) + dnsutils/netcat (dig/nc,
 # for diagnosing that network's reachability) + kcat (lightweight Kafka
 # producer/consumer CLI, for the M5 `bus` compose profile — no JVM/full Kafka
-# distro needed) baked in so no session has to apt-get any of it ad-hoc.
+# distro needed) + python3/python3-yaml/jq (2026-07-20, UDO-directed: scripting +
+# YAML/JSON verification — compose-file validation needed python3 ad-hoc in the
+# DRAY-T29 session AND again at the fleet unification; twice is a pattern) baked
+# in so no session has to apt-get any of it ad-hoc.
 ARG TARGETARCH
 RUN sudo apt-get update \
 	&& sudo apt-get install -y --no-install-recommends openjdk-25-jdk-headless postgresql-client dnsutils netcat-openbsd kcat \
+		python3 python3-yaml jq \
 		libharfbuzz0b fontconfig fonts-dejavu-core \
 	&& sudo rm -rf /var/lib/apt/lists/*
 ENV JAVA_HOME="/usr/lib/jvm/java-25-openjdk-${TARGETARCH}"
